@@ -21,20 +21,20 @@ class IndexController extends Controller{
      * 后台 top 部分
      */
     public function top(){
-        return view('admin.top');
+        return view('common.top');
     }
 
     /*
      * 后台 left 部分
      */
     public function left(){
-        return view('admin.left');
+        return view('common.left');
     }
 
     /*
      * 后台 right 部分
      */
     public function right(){
-        return view('admin.right');
+        return view('common.right');
     }
 }

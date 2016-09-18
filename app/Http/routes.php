@@ -35,6 +35,9 @@ Route::group([ 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['we
     Route::any('left','IndexController@left');
     #后台 right
     Route::any('right','IndexController@right');
+
+    #后台 新增课程分类
+    Route::any('course_type','CourseController@course_type');
 });
 
 
