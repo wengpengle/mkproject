@@ -45,8 +45,28 @@ Route::group([ 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['we
     Route::any('course_type','CourseController@course_type');
     #后台 新增课程分类列表
     Route::any('course_type_list','CourseController@course_type_list');
+
+
+
+
+    /*
+	后台 #加薪利器# 模块
+ 	*/
+	#添加课程
+	Route::any('raises_add','RaisesController@raises_add');
+	#课程列表
+	Route::any('raises_list','RaisesController@raises_list');
+	#课程类型
+	Route::any('raises_type','RaisesController@raises_type');
+	#添加课程
+	# Route::any('raises_type_list','raisesController@raises_type_list');
+	#添加课程体系
+	Route::any('raises_class_one_add','RaisesController@raises_class_one_add');
+	#添加课程方向
+	Route::any('raises_class_two_add','RaisesController@raises_class_two_add');
 });
 
 
 #后台登录页
 Route::any('admin/login','Admin\LoginController@login');
+
