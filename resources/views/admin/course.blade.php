@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>新增班级</title>
+<title>新增课程</title>
 <link rel="stylesheet" type="text/css" href="css/erweima-style.css" />
 </head>
 <body>
@@ -25,8 +25,13 @@
               <li>
                   <label>课程分类：</label>
                   <select class="w200" name="type_id">
-                      <option>班级管理</option>
-                      <option>违纪管理</option>
+                      <option value="">--请选择--</option>
+                      @if( empty( $course ))
+                      @else
+                          @foreach( $course as $key => $value )
+                              <option value="{{$value['type_id']}}">{{str_repeat('|--',$value['level'])}}{{$value['type_name']}}</option>
+                          @endforeach
+                      @endif
                   </select>
               </li>
               <li>

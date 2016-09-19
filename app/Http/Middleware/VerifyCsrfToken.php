@@ -14,5 +14,7 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         #添加课程分类
         'admin/course_type',
+        #添加课程
+        'admin/course'
     ];
 }

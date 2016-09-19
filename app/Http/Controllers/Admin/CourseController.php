@@ -50,7 +50,7 @@ class CourseController extends Controller{
     }
 
     /*
-     * 分类递归
+     * 实现 课程分类递归
      */
     public function course_type_tree( $array , $parent_id = 0 , $level = 0 ){
         static $new_array = '';
@@ -69,10 +69,33 @@ class CourseController extends Controller{
      */
     public function course(Request $request){
         #判断是否是POST提交
-        if( $request -> isMethod('post')){
-          
+        if( $request -> isMethod('post') ){
+            #判断文件上传是否成功
+            if( $request -> file('cou_pic') -> isValid() ){
+
+                $cou_pic = $request -> file( 'cou_pic' );
+                #获取文件名称
+                $picName = $cou_pic -> getClientOriginalName();
+
+                #图片的临时路径
+                $picPath = $cou_pic -> getRealPath();
+
+                #获取文件后缀
+                $prefix = $cou_pic -> getClientOriginalExtension();
+
+                #图片保存路径
+                $mimeTye = $cou_pic -> getMimeType();
+
+                $path = $cou_pic -> move('storage/uploads');
+            }else{
+                echo '图片上传失败';
+            }
         }else{
-            return view('admin.course');
+            #查询课程分类数据
+            $course = DB::table('course_type') -> get();
+            #调用函数 实现无限极
+            $course = $this -> course_type_tree( $course );
+            return view('admin.course', ['course' => $course]);
         }
 
     }
