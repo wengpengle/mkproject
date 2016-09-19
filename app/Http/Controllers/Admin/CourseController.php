@@ -33,7 +33,7 @@ class CourseController extends Controller{
             $course = DB::table('course_type') -> get();
             #调用函数 实现无限极
             $course = $this -> course_type_tree( $course );
-            return view('admin.course_type',['course' => $course]);
+            return view('course.course_type',['course' => $course]);
         }
 
     }
@@ -46,7 +46,7 @@ class CourseController extends Controller{
         $course = DB::table('course_type') -> get();
         #调用函数 实现无限极
         $course = $this -> course_type_tree( $course );
-        return view('admin.course_type_list' ,['course' => $course]);
+        return view('course.course_type_list' ,['course' => $course]);
     }
 
     /*
@@ -65,37 +65,47 @@ class CourseController extends Controller{
     }
 
     /*
-     * 添加课程页面
+     * 新增课程页面
      */
     public function course(Request $request){
         #判断是否是POST提交
         if( $request -> isMethod('post') ){
             #判断文件上传是否成功
             if( $request -> file('cou_pic') -> isValid() ){
-
                 $cou_pic = $request -> file( 'cou_pic' );
                 #获取文件名称
                 $picName = $cou_pic -> getClientOriginalName();
-
-                #图片的临时路径
-                $picPath = $cou_pic -> getRealPath();
-
                 #获取文件后缀
                 $prefix = $cou_pic -> getClientOriginalExtension();
-
                 #图片保存路径
                 $mimeTye = $cou_pic -> getMimeType();
+                #重新命名文件的名称
+                $new_file = date('Y-m-d').mt_rand(1,999).'.'.$prefix;
+                #创建文件夹
+                $dir = 'admin/course/'.date('Y').'/'.date('m').'/'.date('d').'/';
+                #判断是否是一个目录
+                if( !file_exists( $dir )){
+                    mkdir( $dir, 0777, true );
+                }
 
-                $path = $cou_pic -> move('storage/uploads');
-            }else{
-                echo '图片上传失败';
+                #移动文件到制定目录
+                $path = $cou_pic -> move($dir,$new_file);
+
+
+                #图片的临时路径
+                $picPath = $path -> getRealPath();
             }
+
         }else{
             #查询课程分类数据
             $course = DB::table('course_type') -> get();
             #调用函数 实现无限极
             $course = $this -> course_type_tree( $course );
-            return view('admin.course', ['course' => $course]);
+            #查询课程章节数据
+            $course_part = DB::table('course_part') -> get();
+            #调用函数 实现无限极
+
+            return view('course.course', ['course' => $course]);
         }
 
     }
@@ -104,6 +114,6 @@ class CourseController extends Controller{
      * 课程列表页
      */
     public function course_list(){
-        return view('admin.course_list');
+        return view('course.course_list');
     }
 }

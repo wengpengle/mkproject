@@ -50,6 +50,18 @@
                   </select>
               </li>
               <li>
+                  <label>课程父级章节：</label>
+                  <select class="w200" name="cou_grade">
+                      <option value="">-- 请选择课程父级章节 --</option>
+                      <option value="2">中级</option>
+                      <option value="3">高级</option>
+                  </select>
+              </li>
+              <li>
+                  <label>课程所属章节：</label>
+                  <input type="text" name="name" class="w200 name" value="">
+              </li>
+              <li>
                   <label>课程海报：</label>
                   <input type="file" name="cou_pic" class="w200 name">
               </li>
