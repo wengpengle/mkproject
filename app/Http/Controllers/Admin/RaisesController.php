@@ -16,7 +16,7 @@ class RaisesController extends Controller{
     	添加课程体系
      */
     public function raises_class_one_add(){
-        return view('admin.raises_class_one_add');
+        return view('raises.raises_class_one_add');
     }
     /*
     	添加课程方向
@@ -27,21 +27,20 @@ class RaisesController extends Controller{
 
         }else{
         	$arr_one=DB::table('raises_class_one')->get();
-        	print_r($arr_one);die;
-        	return view('admin.raises_class_two_add',['arr_one'=>$arr_one]);
+        	return view('raises.raises_class_two_add',['arr_one'=>$arr_one]);
         }
     }
     /*
      * 添加具体课程页面
      */
     public function raises_add(){
-        return view('admin.raises_add');
+        return view('raises.raises_add');
     }
     /*
     	课程列表
      */
     public function raises_list(){
-        return view('admin.raises_list');
+        return view('raises.raises_list');
     }
     //  /*
     //  * 实现 课程分类递归
