@@ -45,6 +45,11 @@ Route::group([ 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['we
     Route::any('course_type','CourseController@course_type');
     #后台 新增课程分类列表
     Route::any('course_type_list','CourseController@course_type_list');
+
+    #后台 新增课程章节
+    Route::any('part','PartController@part');
+    #后台 课程章节列表
+    Route::any('part_list','PartController@part_list');
 });
 
 

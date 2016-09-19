@@ -15,6 +15,8 @@ class VerifyCsrfToken extends BaseVerifier
         #添加课程分类
         'admin/course_type',
         #添加课程
-        'admin/course'
+        'admin/course',
+        #添加章节
+        'admin/part',
     ];
 }

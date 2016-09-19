@@ -28,6 +28,13 @@
       <dd><a href="{{url('admin/course_type_list')}}" target="rightFrame">课程分类列表</a></dd>
       <!--当前页面导航条dl添加class为dl_height,dt添加class为dl_open,dd添加class为dd_current-->
     </dl>
+    {{--章节管理--}}
+    <dl class="dl_list">
+      <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">章节管理</a></dt><!--打开状态替换close为open-->
+      <dd><a href="{{url('admin/part')}}" target="rightFrame">新增章节</a></dd>
+      <dd><a href="{{url('admin/part_list')}}" target="rightFrame">章节列表</a></dd>
+      <!--当前页面导航条dl添加class为dl_height,dt添加class为dl_open,dd添加class为dd_current-->
+    </dl>
     <dl class="dl_list">
       <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">学生管理</a></dt><!--打开状态替换close为open-->
       <dd><a href="xzxs.html" target="rightFrame">新增学生</a></dd>
