@@ -51,15 +51,21 @@
               </li>
               <li>
                   <label>课程父级章节：</label>
-                  <select class="w200" name="cou_grade">
+                  <select class="w200" name="parent_id">
                       <option value="">-- 请选择课程父级章节 --</option>
-                      <option value="2">中级</option>
-                      <option value="3">高级</option>
+                      @if( empty( $coursePart ))
+                      @else
+                          @foreach( $coursePart as $key => $value )
+                              <option value="{{$value['cp_id']}}" @if( $value['level'] != '0') disabled="disabled" @endif>
+                                  {{str_repeat('&nbsp;&nbsp;|-- ',$value['level'])}}{{$value['cp_name']}}
+                              </option>
+                          @endforeach
+                      @endif
                   </select>
               </li>
               <li>
                   <label>课程所属章节：</label>
-                  <input type="text" name="name" class="w200 name" value="">
+                  <input type="text" name="cp_name" class="w200 name">
               </li>
               <li>
                   <label>课程海报：</label>

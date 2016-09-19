@@ -13,7 +13,7 @@ use DB;
 
 class CourseController extends Controller{
     /*
-     * 后台首页
+     * 后台首页 [ 新增课程分类 ]
      */
     public function course_type(Request $request){
         #判断是否是POST提交
@@ -70,38 +70,31 @@ class CourseController extends Controller{
     public function course(Request $request){
         #判断是否是POST提交
         if( $request -> isMethod('post') ){
-            $cou_pic = $request -> file( 'cou_pic' );
-            #验证文件是否存在使用 hasFile 方法判断文件在请求中是否存在：
-            if( $request->hasFile('cou_pic') ) {
-                echo "<script>alert('文件上传失败');location.href='course'</script>";
+            $cou_pic = $request -> file('cou_pic');
+            #判断文件是否上传
+            if( $cou_pic -> isValid() ){
+                # 获取文件相关信息
+                # 缓存在tmp文件夹中的文件名 例如 php8933.tmp 这种类型的.
+                $tmpName = $cou_pic -> getFileName();
+                #这个表示的是缓存在tmp文件夹下的文件的绝对路径
+                $realPath = $cou_pic -> getRealPath();
+                #获取文件后缀
+                $prefix = $cou_pic -> getClientOriginalExtension();  // 扩展名
+                #大家对mimeType应该不陌生了. 我得到的结果是 image/jpeg.
+                $mimeTye = $cou_pic -> getMimeType();
+                #文件路径
+                $dir = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
+                if( !file_exists( $dir ) ){
+                    mkdir( $dir , 0777, true );
+                }
+                #重新命名文件名称
+                $fileName = date('H:i:s').'_'.mt_rand(1,9999).'.'.$prefix;
+
+                $path = $cou_pic -> move($dir,$fileName);
+                print_r($path);
+            }else{
+                echo "<script>alert('没有上传文件');location.href='course'</script>";
             }
-
-            #获取文件后缀
-            $prefix = $cou_pic -> getClientOriginalExtension();
-
-            #重新命名文件的名称
-            $fileName = date('Y-m-d').mt_rand(1,999).'_'.'.'.$prefix;
-
-            #创建文件夹
-            $dir = 'admin/course/'.date('Y').'/'.date('m').'/'.date('d').'/';
-            #判断是否是一个目录
-            if( !file_exists( $dir )){
-                mkdir( $dir, 0777, true );
-            }
-
-            $picPath = $request->file('photo')->move($dir, $fileName);
-
-            #移动文件到制定目录
-            $path = $cou_pic -> move($dir,$fileName);
-            #图片的临时路径
-            //$picPath = $path -> getRealPath();
-            #判断图片上传是否成功
-
-            if( !$picPath ){
-                return redirect('admin/course')->with('上传文件失败');
-            }
-
-
 
         }else{
             #查询课程分类数据
@@ -111,11 +104,29 @@ class CourseController extends Controller{
             #查询课程章节数据
             $course_part = DB::table('course_part') -> get();
             #调用函数 实现无限极
-
+            $course_part = $this -> course_part_tree( $course_part );
+            #渲染模板赋值
             return view('course.course', ['course' => $course , 'coursePart' => $course_part]);
         }
 
     }
+
+    /*
+     * 实现 课程章节递归
+     */
+    public function course_part_tree( $array , $parent_id = 0 , $level = 0 ){
+        static $new_array = '';
+        foreach( $array as $key => $value ){
+            if( $value['parent_id'] == $parent_id ){
+                $value['level'] = $level;
+                $new_array[] = $value;
+                $this -> course_part_tree( $array, $value['cp_id'] ,$level+1 );
+            }
+        }
+        return $new_array;
+    }
+
+
 
     /*
      * 课程列表页
