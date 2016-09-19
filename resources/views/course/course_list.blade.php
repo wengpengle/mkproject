@@ -28,7 +28,7 @@
                   <option>1407phpC</option>
                 </select>
               </li>
-              <li><a class="btn01">查询</a></li><a class="btn03" href="">新增课程</a><a class="btn02" href="">批量删除</a>
+              <li><a class="btn01">查询</a></li><a class="btn03" href="{{url('admin/course')}}">新增课程</a><a class="btn02" href="">批量删除</a>
             </ul>
           </div>
         </div>
