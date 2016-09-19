@@ -29,10 +29,14 @@
       <!--当前页面导航条dl添加class为dl_height,dt添加class为dl_open,dd添加class为dd_current-->
     </dl>
     <dl class="dl_list">
-      <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">学生管理</a></dt><!--打开状态替换close为open-->
-      <dd><a href="xzxs.html" target="rightFrame">新增学生</a></dd>
-      <dd><a href="xsxx_list.html" target="rightFrame">学生信息列表</a></dd>
-      <dd><a href="javascript:;" target="rightFrame">学生调班</a></dd>
+      <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">加薪利器</a></dt><!--打开状态替换close为open-->
+      <dd><a href="{{url('admin/raises_class_one_add')}}" target="rightFrame">添加课程体系</a></dd>
+      <dd><a href="{{url('admin/raises_class_two_add')}}" target="rightFrame">新增课程方向</a></dd>
+      <dd><a href="{{url('admin/raises_add')}}" target="rightFrame">新增课程</a></dd>
+      <dd><a href="{{url('admin/raises_list')}}" target="rightFrame">课程列表</a></dd>
+      <dd><a href="{{url('admin/raises_type')}}" target="rightFrame">新增课程分类</a></dd>
+      <dd><a href="{{url('admin/raises_type_list')}}" target="rightFrame">课程分类列表</a></dd>
+      <!--当前页面导航条dl添加class为dl_height,dt添加class为dl_open,dd添加class为dd_current-->
     </dl>
     <dl class="dl_list dl_3">
       <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">违纪管理</a></dt><!--打开状态替换close为open-->
