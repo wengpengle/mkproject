@@ -70,31 +70,38 @@ class CourseController extends Controller{
     public function course(Request $request){
         #判断是否是POST提交
         if( $request -> isMethod('post') ){
-            #判断文件上传是否成功
-            if( $request -> file('cou_pic') -> isValid() ){
-                $cou_pic = $request -> file( 'cou_pic' );
-                #获取文件名称
-                $picName = $cou_pic -> getClientOriginalName();
-                #获取文件后缀
-                $prefix = $cou_pic -> getClientOriginalExtension();
-                #图片保存路径
-                $mimeTye = $cou_pic -> getMimeType();
-                #重新命名文件的名称
-                $new_file = date('Y-m-d').mt_rand(1,999).'.'.$prefix;
-                #创建文件夹
-                $dir = 'admin/course/'.date('Y').'/'.date('m').'/'.date('d').'/';
-                #判断是否是一个目录
-                if( !file_exists( $dir )){
-                    mkdir( $dir, 0777, true );
-                }
-
-                #移动文件到制定目录
-                $path = $cou_pic -> move($dir,$new_file);
-
-
-                #图片的临时路径
-                $picPath = $path -> getRealPath();
+            $cou_pic = $request -> file( 'cou_pic' );
+            #验证文件是否存在使用 hasFile 方法判断文件在请求中是否存在：
+            if( $request->hasFile('cou_pic') ) {
+                echo "<script>alert('文件上传失败');location.href='course'</script>";
             }
+
+            #获取文件后缀
+            $prefix = $cou_pic -> getClientOriginalExtension();
+
+            #重新命名文件的名称
+            $fileName = date('Y-m-d').mt_rand(1,999).'_'.'.'.$prefix;
+
+            #创建文件夹
+            $dir = 'admin/course/'.date('Y').'/'.date('m').'/'.date('d').'/';
+            #判断是否是一个目录
+            if( !file_exists( $dir )){
+                mkdir( $dir, 0777, true );
+            }
+
+            $picPath = $request->file('photo')->move($dir, $fileName);
+
+            #移动文件到制定目录
+            $path = $cou_pic -> move($dir,$fileName);
+            #图片的临时路径
+            //$picPath = $path -> getRealPath();
+            #判断图片上传是否成功
+
+            if( !$picPath ){
+                return redirect('admin/course')->with('上传文件失败');
+            }
+
+
 
         }else{
             #查询课程分类数据
@@ -105,7 +112,7 @@ class CourseController extends Controller{
             $course_part = DB::table('course_part') -> get();
             #调用函数 实现无限极
 
-            return view('course.course', ['course' => $course]);
+            return view('course.course', ['course' => $course , 'coursePart' => $course_part]);
         }
 
     }
