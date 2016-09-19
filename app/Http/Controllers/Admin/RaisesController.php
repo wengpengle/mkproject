@@ -26,6 +26,7 @@ class RaisesController extends Controller{
         {
 
         }else{
+        	echo 1111;
         	$arr_one=DB::table('raises_class_one')->get();
         	return view('raises.raises_class_two_add',['arr_one'=>$arr_one]);
         }
