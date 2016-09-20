@@ -44,6 +44,7 @@
                 <th>视频</th>
                 <th>所属课程方向</th>
                 <th>所属课程体系</th>
+                <th>所属分类</th>
                 <th>添加时间</th>
               </tr>
             </thead>
@@ -59,6 +60,7 @@
                 </td>
                 <td>{{ $v['rct_title'] }}</td>
                 <td>{{ $v['rco_title'] }}</td>
+                <td>{{ $v['type_name'] }}</td>
                 <td>{{ $v['rai_time'] }}</td>
               </tr>
              @endforeach
