@@ -20,7 +20,7 @@
           <div id="child">
               <li>
                   <label>课程体系名称：</label>
-                  <input type="text" name="rco_name" class="w200 name" value="">
+                  <input type="text" name="rco_title" class="w200 name" value="">
               </li>
               <li>
                   <label>课程分类：</label>

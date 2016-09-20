@@ -19,16 +19,6 @@
           <!--  父类的课程填写表单 -->
           <div id="child">
               <li>
-                  <label>课程方向名称：</label>
-                  <input type="text" name="rct_name" class="w200 name" value="">
-              </li>
-              <li>
-                  <label>描述：</label>
-                  <textarea style="height:100px;" name="rct_desc" cols="30" rows="10" class="w200 name">
-                  </textarea>
-              </li>
-
-              <li>
                   <label>选择课程体系：</label>
                   <select class="w200" name="rco_id">
                       <option value="0">--请选择--</option>
@@ -37,11 +27,20 @@
                       <?php } ?>
                   </select>
               </li>
+              <li>
+                  <label>课程方向名称：</label>
+                  <input type="text" name="rct_name" class="w200 name" value="">
+              </li>
+              <li>
+                  <label>描述：</label>
+                  <textarea style="height:100px;" name="rct_desc" cols="30" rows="10" class="w200 name">
+                  </textarea>
+              </li>
           </div>
       </ul>
     </div>
     <div class="preview">
-        <input type="submit" value="添加" class="preview-btn btn01">
+        <input type="submit" disabled="none" value="添加" class="preview-btn btn01">
         <input type="reset" value="重置" class="cancel-btn btn01">
     </div>
         </form>
