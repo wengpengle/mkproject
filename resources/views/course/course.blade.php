@@ -20,7 +20,7 @@
           <div id="child">
               <li>
                   <label>课程名称：</label>
-                  <input type="text" name="name" class="w200 name" value="">
+                  <input type="text" name="cou_name" class="w200 name" value="">
               </li>
               <li>
                   <label>课程分类：</label>
@@ -40,13 +40,20 @@
 
                   </textarea>
               </li>
-
               <li>
                   <label>课程等级：</label>
                   <select class="w200" name="cou_grade">
                       <option value="1">初级</option>
                       <option value="2">中级</option>
                       <option value="3">高级</option>
+                  </select>
+              </li>
+              <li>
+                  <label>章节所属模块：</label>
+                  <select class="w200" name="model_id">
+                      <option value="">-- 请选择 --</option>
+                      <option value="1">加薪利器模块</option>
+                      <option value="2">普通课程模块</option>
                   </select>
               </li>
               <li>
@@ -89,13 +96,4 @@
     </div>
 </body>
 </html>
-<script>
-    function dis_child(){
-        document.getElementById('child').style.display='block';
-        document.getElementById('parent').style.display='none';
-    }
-    function dis_parent(){
-        document.getElementById('child').style.display='none';
-        document.getElementById('parent').style.display='block';
-    }
-</script>
+

@@ -67,33 +67,65 @@ class CourseController extends Controller{
     /*
      * 新增课程页面
      */
-    public function course(Request $request){
+    public function course( Request $request ){
         #判断是否是POST提交
         if( $request -> isMethod('post') ){
-            $cou_pic = $request -> file('cou_pic');
-            #判断文件是否上传
-            if( $cou_pic -> isValid() ){
-                # 获取文件相关信息
-                # 缓存在tmp文件夹中的文件名 例如 php8933.tmp 这种类型的.
-                $tmpName = $cou_pic -> getFileName();
-                #这个表示的是缓存在tmp文件夹下的文件的绝对路径
-                $realPath = $cou_pic -> getRealPath();
-                #获取文件后缀
-                $prefix = $cou_pic -> getClientOriginalExtension();  // 扩展名
-                #大家对mimeType应该不陌生了. 我得到的结果是 image/jpeg.
-                $mimeTye = $cou_pic -> getMimeType();
-                #文件路径
-                $dir = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
-                if( !file_exists( $dir ) ){
-                    mkdir( $dir , 0777, true );
-                }
-                #重新命名文件名称
-                $fileName = date('H:i:s').'_'.mt_rand(1,9999).'.'.$prefix;
+            #上传图片
+            $file = $request -> file('cou_pic');
+            #调用函数上传图片
+            $resultImg = uploadImg( $file );
+            if( !empty( $resultImg['status'] ) ){
+                echo "<script>alert('上传的图片格式不正确');location.href='course'</script>";
+                exit();
+            }
+            #上传视频
+            $cou_video = $request -> file('cou_video');
+            #调用函数上传视频
+            $resultVideo = uploadVideo( $cou_video );
+            if( !empty( $resultVideo['status'] ) ){
+                echo "<script>alert('上传的视频格式不正确');location.href='course'</script>";
+                exit();
+            }
 
-                $path = $cou_pic -> move($dir,$fileName);
-                print_r($path);
+            #接收章节信息
+            $cp_data['cp_name'] = $request -> input('cp_name');
+            $cp_data['parent_id'] = $request -> input('parent_id');
+            $cp_data['model_id'] = $request -> input('model_id');
+            $cp_data['cp_time'] = date('Y-m-d H:i:s',time());
+
+            #章节信息执行入库操作
+            $cp_id = DB::table('course_part') -> insertGetId( $cp_data );
+
+            #判断章节添加是否成功
+            if( $cp_id ){
+
+                #接收课程数据
+                $data = $request -> input();
+                unset($data['model_id']);
+                unset($data['cp_name']);
+                unset($data['parent_id']);
+                # 图片和视频的路径
+                $data['cou_pic'] = $resultImg['path'];
+                $data['cou_video'] = $resultVideo['path'];
+                $data['cou_time'] = date('Y-m-d H:i:s',time());
+                #章节ID
+                $data['cp_id'] = $cp_id;
+                #登录讲师的ID
+                $data['teacher_id'] = rand(1,10);
+
+                #课程执行入库操作
+                $result = DB::table('course') -> insert( $data );
+
+                #判断添加是否成功
+                if( $result ){
+                    echo "<script>alert('上传课程信息成功');location.href='course_list'</script>";
+                }else{
+                    echo "<script>alert('上传课程信息失败');location.href='course'</script>";
+                    exit();
+                }
             }else{
-                echo "<script>alert('没有上传文件');location.href='course'</script>";
+                echo "<script>alert('添加课程章节失败');location.href='course'</script>";
+                exit();
             }
 
         }else{
@@ -102,7 +134,7 @@ class CourseController extends Controller{
             #调用函数 实现无限极
             $course = $this -> course_type_tree( $course );
             #查询课程章节数据
-            $course_part = DB::table('course_part') -> get();
+            $course_part = DB::table('course_part') -> where('model_id','=','2') -> get();
             #调用函数 实现无限极
             $course_part = $this -> course_part_tree( $course_part );
             #渲染模板赋值
@@ -132,6 +164,10 @@ class CourseController extends Controller{
      * 课程列表页
      */
     public function course_list(){
-        return view('course.course_list');
+        #查看课程信息
+        $course = DB::table('course') ->join('course_part','course.cp_id','=','course_part.cp_id')
+                            -> where('model_id','=','2') -> get();
+
+        return view('course.course_list',['course' => $course]);
     }
 }

@@ -71,6 +71,24 @@ Route::group([ 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['we
     Route::any('part','PartController@part');
     #后台 课程章节列表
     Route::any('part_list','PartController@part_list');
+
+
+    ####################################################################
+    #                           实战课程模块                             #
+    #实战课程 新增实战课程
+    Route::any('actual','ActualController@index');
+    #新增实战课程
+    Route::any('add_actual','ActualController@add_actual');
+    #实战课程列表
+    Route::any('actual_lists','ActualController@actual_lists');
+    Route::any('actual_up','ActualController@actual_up');
+    Route::any('actual_del','ActualController@actual_del');
+
+    #实战课程 新增课程章节
+    Route::any('part_info','ActualController@part_info');
+    Route::any('add_part','ActualController@add_part');
+    Route::any('part_lists','ActualController@part_lists');
+    Route::any('part_up','ActualController@part_up');
 });
 
 

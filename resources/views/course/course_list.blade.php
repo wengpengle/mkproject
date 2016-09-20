@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css" href="css/erweima-style.css" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.js"></script>
+  {{--public--}}
+  <base href="{{asset('public')}}">
 </head>
 
 <body>
@@ -38,33 +40,38 @@
             <thead>
               <tr>
               	<th>请选择</th>
-                <th>学号</th>
-                <th>课程姓名</th>
-                <th>班级</th>
-                <th>讲师</th>
-                <th>班主任</th>
+                <th>课程编号</th>
+                <th>课程名称</th>
+                <th>课程图片</th>
+                <th>课程等级</th>
+                <th>添加时间</th>
+                <th>所属章节</th>
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
+            @foreach( $course as $key => $value )
               <tr>
               	<td><input type="radio" name="" /></td>
-                <td>001</td>
-                <td>课程1</td>
-                <td>1407phpC</td>
-                <td>李朋</td>
-                <td>余强</td>
-                <td class="operation"><a class="edit">修改</a></td>
+                <td>{{$value['cou_id']}}</td>
+                <td>{{$value['cou_name']}}</td>
+                <td><img src="{{$value['cou_pic']}}" alt="" width="50" height="50"></td>
+                <td>
+                  @if( $value['cou_grade'] == '1' )
+                    <font color="red">初级</font>
+                  @elseif( $value['cou_grade'] == '2')
+                    <font color="green">中级</font>
+                  @else
+                    <font color="#00008b">高级</font>
+                  @endif
+                </td>
+                <td>{{$value['cou_time']}}</td>
+                <td>{{$value['cp_name']}}</td>
+                <td class="operation">
+                  <a class="edit">修改</a> | <a href="">删除</a>
+                </td>
               </tr>
-              <tr class="odd">
-              	<td><input type="radio" name="" /></td>
-                <td>002</td>
-                <td>课程2</td>
-                <td>1407phpC</td>
-                <td>李朋</td>
-                <td>余强</td>
-                <td class="operation"><a class="edit">修改</a></td>
-              </tr>
+            @endforeach
             </tbody>
           </table>
           <!--分页 start-->

@@ -45,6 +45,14 @@
       <dd><a href="{{url('admin/raises_type_list')}}" target="rightFrame">课程分类列表</a></dd>
       <!--当前页面导航条dl添加class为dl_height,dt添加class为dl_open,dd添加class为dd_current-->
     </dl>
+    {{--实战课程模块--}}
+    <dl class="dl_list dl_3">
+      <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">实战课程管理</a></dt><!--打开状态替换close为open-->
+      <dd><a href="{{url('admin/actual')}}" target="rightFrame">实战课程</a></dd>
+      <dd><a href="{{url('admin/actual_lists')}}" target="rightFrame">实战课程列表</a></dd>
+      <dd><a href="{{url('admin/part_info')}}" target="rightFrame">新添实战课程章节</a></dd>
+      <dd><a href="{{url('admin/part_lists')}}" target="rightFrame">实战课程列表</a></dd>
+    </dl>
     <dl class="dl_list dl_3">
       <dt class="dl_open"><span class="expend_icon"></span><a href="javascript:;">违纪管理</a></dt><!--打开状态替换close为open-->
       <dd><a href="xzwj.html" target="rightFrame">新增违纪</a></dd>
