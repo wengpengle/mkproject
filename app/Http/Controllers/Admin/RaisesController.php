@@ -20,18 +20,10 @@ class RaisesController extends Controller{
         {
         	$file=Request::file('rco_pic');
         	if($file -> isValid()){
-        		//检验一下上传的文件是否有效
-        		$clientName = $file -> getClientOriginalName();
-        		//缓存在tmp文件夹中的文件名
-        		$tmpName = $file ->getFileName();
-        		//这个表示的是缓存在tmp文件夹下的文件的绝对路径
-        		$realPath = $file -> getRealPath();
         		//上传文件的后缀.
         		$extension = $file -> getClientOriginalExtension();
-        		//大家对mimeType应该不陌生了. 我得到的结果是 image/jpeg.
-        		$mimeTye = $file -> getMimeType();
         		#文件上传的路径
-				$path = 'uploads/raises/'.date('Y').'/'.date('m').'/'.date('d').'/';
+				$path = 'uploads/raises_one/'.date('Y').'/'.date('m').'/'.date('d').'/';
 				if( !file_exists( $path ) ){
 				    mkdir( $path, 0777, true);
 				}
@@ -72,26 +64,87 @@ class RaisesController extends Controller{
      * 添加具体课程页面
      */
     public function raises_add(){
-        return view('raises.raises_add');
+        if(Request::isMethod('post')){
+        	$teacher_id=1;
+        	$rai_pic=Request::file('rai_pic');
+        	$rai_video=Request::file('rai_video');
+        	// 封面上传
+        		#上传文件的后缀.
+        		$pic_extension = $rai_pic -> getClientOriginalExtension();
+        		#文件上传的路径
+				$pic_path = 'uploads/raises/picture/'.date('Y').'/'.date('m').'/'.date('d').'/';
+				if( !file_exists( $pic_path ) ){
+				    mkdir( $pic_path, 0777, true);
+				}
+				//新名字
+				$pic_newname = date('ymdhis').time().".".$pic_extension;
+        		$rai_pic -> move($pic_path,$pic_newname);
+        		$pic_upload=$pic_path.$pic_newname;
+        	// 视频上传
+        		#上传文件的后缀.
+        		$video_extension = $rai_video -> getClientOriginalExtension();
+        		#文件上传的路径
+				$video_path = 'uploads/raises/video/'.date('Y').'/'.date('m').'/'.date('d').'/';
+				if( !file_exists( $video_path ) ){
+				    mkdir( $video_path, 0777, true);
+				}
+				//新名字
+				$video_newname = date('ymdhis').time().".".$video_extension;
+        		$rai_video -> move($video_path,$video_newname);
+        		$video_upload=$video_path.$video_newname;
+
+        		$data=Request::input();
+        		unset($data['cp_name']);
+        		$data['rai_pic']=$pic_upload;
+        		$data['rai_video']=$video_upload;
+        		$data['rai_time']=date('Y-m-d H:i:s',time());
+        		$data['teacher_id']=$teacher_id;
+        		$result=DB::table('raises')->insert($data);
+        		if($result){
+        			$arr['cp_name']=Request::input('cp_name');
+        			$arr['cp_time']=date('Y-m-d H:i:s',time());
+        			$arr['parent_id']=$data['cp_id'];
+        			$arr['model_id']=1;
+        			DB::table('course_part')->insert($arr);
+        			return redirect('admin/raises_list');
+        		}
+        }else{
+        	#查询课程章节数据
+            $course_part = DB::table('course_part') -> get();
+            #调用函数 实现无限极
+            $course_part = $this -> course_part_tree( $course_part );
+            #课程体系
+            $arr_one=DB::table('raises_class_one')->get();
+            #课程方向
+            $arr_two=DB::table('raises_class_two')->get();
+        	return view('raises.raises_add',['coursePart' => $course_part,'arr_one'=>$arr_one,'arr_two'=>$arr_two]);
+        }
     }
     /*
     	课程列表
      */
     public function raises_list(){
-        return view('raises.raises_list');
+    	$arr=DB::table('raises')
+    			 ->leftjoin('raises_class_two','raises.rct_id','=','raises_class_two.rct_id')
+    			 ->leftjoin('raises_class_one','raises_class_two.rco_id','=','raises_class_one.rco_id')
+    			 ->leftjoin('course_part','raises.cp_id','=','course_part.cp_id')
+    			 ->leftjoin('user','raises.teacher_id','=','user.user_id')
+    			 ->select('raises.*', 'raises_class_two.rct_title', 'course_part.cp_name','raises_class_one.rco_title','user.username')
+    			 ->get();
+        return view('raises.raises_list',['arr'=>$arr]);
     }
-    //  /*
-    //  * 实现 课程分类递归
-    //  */
-    // public function course_type_tree( $array , $parent_id = 0 , $level = 0 ){
-    //     static $new_array = '';
-    //     foreach( $array as $key => $value ){
-    //         if( $value['parent_id'] == $parent_id ){
-    //             $value['level'] = $level;
-    //             $new_array[] = $value;
-    //             $this -> course_type_tree( $array, $value['type_id'] ,$level+1 );
-    //         }
-    //     }
-    //     return $new_array;
-    // }
+     /*
+     * 实现 课程章节递归
+     */
+    public function course_part_tree( $array , $parent_id = 0 , $level = 0 ){
+        static $new_array = '';
+        foreach( $array as $key => $value ){
+            if( $value['parent_id'] == $parent_id ){
+                $value['level'] = $level;
+                $new_array[] = $value;
+                $this -> course_part_tree( $array, $value['cp_id'] ,$level+1 );
+            }
+        }
+        return $new_array;
+    }
 }

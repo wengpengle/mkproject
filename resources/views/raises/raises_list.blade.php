@@ -6,8 +6,8 @@
 <link rel="stylesheet" type="text/css" href="css/erweima-style.css" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.js"></script>
+<base href="{{ asset('public') }}" />
 </head>
-
 <body>
 <div class="chuda_co" id="container">
   <div class="co-box">
@@ -37,34 +37,31 @@
         <table class="tablelist" border="0" cellpadding="0" cellspacing="0">
             <thead>
               <tr>
-              	<th>请选择</th>
-                <th>学号</th>
-                <th>课程姓名</th>
-                <th>班级</th>
-                <th>讲师</th>
-                <th>班主任</th>
-                <th>操作</th>
+                <th>课程名称</th>
+              	<th width='50'>讲师</th>
+                <th width='300'>课程描述</th>
+                <th>封面</th>
+                <th>视频</th>
+                <th>所属课程方向</th>
+                <th>所属课程体系</th>
+                <th>添加时间</th>
               </tr>
             </thead>
             <tbody>
+            @foreach( $arr as $k => $v )
               <tr>
-              	<td><input type="radio" name="" /></td>
-                <td>001</td>
-                <td>课程1</td>
-                <td>1407phpC</td>
-                <td>李朋</td>
-                <td>余强</td>
-                <td class="operation"><a class="edit">修改</a></td>
+              	<td>{{ $v['rai_name'] }}</td>
+                <td>{{ $v['username'] }}</td>
+                <td>{{ $v['rai_desc'] }}</td>
+                <td><img src="{{ $v['rai_pic'] }}" alt="" width='50' height="50" /></td>
+                <td>
+                  <video controls="controls" src="{{ $v['rai_video'] }}" width='100' height='100'></video>
+                </td>
+                <td>{{ $v['rct_title'] }}</td>
+                <td>{{ $v['rco_title'] }}</td>
+                <td>{{ $v['rai_time'] }}</td>
               </tr>
-              <tr class="odd">
-              	<td><input type="radio" name="" /></td>
-                <td>002</td>
-                <td>课程2</td>
-                <td>1407phpC</td>
-                <td>李朋</td>
-                <td>余强</td>
-                <td class="operation"><a class="edit">修改</a></td>
-              </tr>
+             @endforeach
             </tbody>
           </table>
           <!--分页 start-->

@@ -47,7 +47,6 @@ class PartController extends Controller{
         $course_part = DB::table('course_part') -> get();
         #调用函数 实现无限极
         $course_part = $this -> course_part_tree( $course_part );
-
         return view('part.part_list', ['coursePart' => $course_part]);
     }
 
