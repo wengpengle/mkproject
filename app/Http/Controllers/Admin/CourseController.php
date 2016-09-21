@@ -93,8 +93,16 @@ class CourseController extends Controller{
             $cp_data['model_id'] = $request -> input('model_id');
             $cp_data['cp_time'] = date('Y-m-d H:i:s',time());
 
-            #章节信息执行入库操作
-            $cp_id = DB::table('course_part') -> insertGetId( $cp_data );
+            #验证章节唯一性
+            $cp_name = DB::table('course_part') -> where('cp_name',$cp_data['cp_name']) -> first();
+            if( empty($cp_name) ){
+                #章节名称不存在 则 执行 章节信息执行入库操作
+                $cp_id = DB::table('course_part') -> insertGetId( $cp_data );
+            }else{
+                echo "<script>alert('章节名称已存在、不可以重复添加');location.href='course'</script>";
+                exit();
+            }
+
 
             #判断章节添加是否成功
             if( $cp_id ){
