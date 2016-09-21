@@ -25,10 +25,10 @@
               <li>
                   <label>课程分类：</label>
                   <select class="w200 " name="type_name">
-                      <option value="前端">前端</option>
-                      <option value="后端">后端</option>
-                      <option value="后台">后台</option>
-                      <option value="整站">整站</option>
+                      <option value="1">前端</option>
+                      <option value="2">后端</option>
+                      <option value="3">移动</option>
+                      <option value="4">整站</option>
                   </select>
               </li>
               <li>

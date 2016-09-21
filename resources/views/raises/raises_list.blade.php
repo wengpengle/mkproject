@@ -38,6 +38,7 @@
             <thead>
               <tr>
                 <th>课程名称</th>
+                <th>章节名称</th>
               	<th width='50'>讲师</th>
                 <th width='300'>课程描述</th>
                 <th>封面</th>
@@ -51,7 +52,8 @@
             <tbody>
             @foreach( $arr as $k => $v )
               <tr>
-              	<td>{{ $v['rai_name'] }}</td>
+                <td>{{ $v['rai_name'] }}</td>
+              	<td>{{ $v['cp_name'] }}</td>
                 <td>{{ $v['username'] }}</td>
                 <td>{{ $v['rai_desc'] }}</td>
                 <td><img src="{{ $v['rai_pic'] }}" alt="" width='50' height="50" /></td>
@@ -60,7 +62,17 @@
                 </td>
                 <td>{{ $v['rct_title'] }}</td>
                 <td>{{ $v['rco_title'] }}</td>
-                <td>{{ $v['type_name'] }}</td>
+                <td>
+                  @if($v['type_name']==1)
+                  前端
+                  @elseif($v['type_name']==2)
+                  后端
+                  @elseif($v['type_name']==3)
+                  移动
+                  @else
+                  整站
+                  @endif
+                </td>
                 <td>{{ $v['rai_time'] }}</td>
               </tr>
              @endforeach
