@@ -110,7 +110,9 @@ class RaisesController extends Controller{
         		}
         }else{
         	#查询课程章节数据
-            $course_part = DB::table('course_part') -> get();
+            $course_part = DB::table('course_part') 
+            				->where('model_id','=',1)
+            				-> get();
             #调用函数 实现无限极
             $course_part = $this -> course_part_tree( $course_part );
             #课程体系
@@ -129,7 +131,7 @@ class RaisesController extends Controller{
     			 ->leftjoin('raises_class_one','raises_class_two.rco_id','=','raises_class_one.rco_id')
     			 ->leftjoin('course_part','raises.cp_id','=','course_part.cp_id')
     			 ->leftjoin('user','raises.teacher_id','=','user.user_id')
-    			 ->select('raises.*', 'raises_class_two.rct_title', 'course_part.cp_name','raises_class_one.rco_title','user.username')
+    			 ->select('raises.*', 'raises_class_two.rct_title', 'course_part.cp_name','raises_class_one.rco_title','user.username','raises_class_one.type_name')
     			 ->get();
         return view('raises.raises_list',['arr'=>$arr]);
     }
